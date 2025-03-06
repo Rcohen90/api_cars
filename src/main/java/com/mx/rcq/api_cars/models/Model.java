@@ -1,7 +1,12 @@
 package com.mx.rcq.api_cars.models;
 
 import jakarta.persistence.*;
+import lombok.*;
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,16 +22,9 @@ public class Model {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    public Model() {}
-
     public Model(String name, int averagePrice, Brand brand) {
         this.name = name;
         this.averagePrice = averagePrice;
         this.brand = brand;
     }
-
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public int getAveragePrice() { return averagePrice; }
-    public void setAveragePrice(int averagePrice) { this.averagePrice = averagePrice; }
 }

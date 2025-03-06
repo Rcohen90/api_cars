@@ -1,9 +1,12 @@
 package com.mx.rcq.api_cars.models;
 
 import jakarta.persistence.*;
-import java.util.List;
-
+import lombok.*;
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,17 +14,12 @@ public class Brand {
 
     @Column(unique = true, nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Model> models;
-
-    public Brand() {}
+    
+    @Column(nullable = true)
+    private double averagePrice;
 
     public Brand(String name) {
         this.name = name;
+        this.averagePrice = 0.0;
     }
-
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
 }
