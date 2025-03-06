@@ -24,7 +24,7 @@ public class ModelController {
         Integer newPrice = request.get("average_price");
 
         if (newPrice == null || newPrice < 100000) {
-            return ResponseEntity.badRequest().body("El precio promedio debe ser mayor a 100,000.");
+            return ResponseEntity.badRequest().body("The average_price must be greater then 100,000.");
         }
 
         Optional<Model> modelOptional = modelService.updateModelPrice(modelId, newPrice);
@@ -38,4 +38,5 @@ public class ModelController {
         List<Model> models = modelService.getModelsByPriceRange(greater, lower);
         return models.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(models);
     }
+
 }

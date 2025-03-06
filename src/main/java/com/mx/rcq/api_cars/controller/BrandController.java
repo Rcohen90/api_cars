@@ -9,6 +9,8 @@ import com.mx.rcq.api_cars.service.ModelService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/brands")
@@ -22,8 +24,11 @@ public class BrandController {
     }
 
     @GetMapping
-    public List<Brand> getAllBrands() {
-        return brandService.getAllBrands();
+    public ResponseEntity<List<Brand>> getAllBrands() {
+        List<Brand> brands = brandService.getAllBrands().stream()
+                .map(brand -> new Brand(brand.getId(), brand.getName(), brandService.calculateAveragePrice(brand)))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(brands);
     }
 
     @GetMapping("/{brandId}/models")
@@ -37,7 +42,7 @@ public class BrandController {
         try {
             return ResponseEntity.ok(brandService.addBrand(brand.getName()));
         } catch (IllegalArgumentException e) {
-            return e.getMessage().contains("duplicate") ? ResponseEntity.badRequest().body("Brand iss already exists.") : ResponseEntity.badRequest().body(e.getMessage());
+            return e.getMessage().contains("duplicate") ? ResponseEntity.badRequest().body("Brand is already exists.") : ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -48,10 +53,15 @@ public class BrandController {
             Integer averagePrice = (Integer) request.getOrDefault("average_price", 0);
 
             if (averagePrice != null && averagePrice < 100000) {
-                return ResponseEntity.badRequest().body("El precio promedio debe ser mayor a 100,000.");
+                return ResponseEntity.badRequest().body("The average_price must be greater then 100,000.");
             }
 
             Model model = modelService.addModel(brandId, name, averagePrice);
+            Optional<Brand> brand = brandService.getBrandById(brandId);
+            if(brand.isPresent()) {
+                Brand updatedBrand = new Brand(brand.get().getId(), brand.get().getName(), brandService.calculateAveragePrice(brand.get()));
+                brandService.calculateAveragePrice(updatedBrand);
+            }
             return ResponseEntity.ok(model);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

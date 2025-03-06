@@ -36,9 +36,6 @@ public class ModelService {
 
         Model model = new Model(name, averagePrice, brand);
         modelRepository.save(model);
-
-        // Recalcular el precio promedio de la marca
-        // brand.updateAveragePrice();
         brandRepository.save(brand);
 
         return model;
@@ -49,17 +46,11 @@ public class ModelService {
         if (newPrice < 100000) {
             throw new IllegalArgumentException("The average_price must be greater then 100,000.");
         }
-
         Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new IllegalArgumentException("Model is not found."));
-
-        model.setAveragePrice(newPrice);
+        .orElseThrow(() -> new IllegalArgumentException("Model is not found."));
+                
+        model.setAveragePrice(newPrice);        
         modelRepository.save(model);
-
-        // ✅ Recalcular el precio promedio de la marca
-        //Brand brand = model.getBrand();
-        //brand.updateAveragePrice();
-        //brandRepository.save(brand);
 
         return Optional.of(model);
     }
