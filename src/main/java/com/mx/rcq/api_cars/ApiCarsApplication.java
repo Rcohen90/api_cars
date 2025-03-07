@@ -8,7 +8,6 @@ public class ApiCarsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiCarsApplication.class, args);
-		System.out.println("API Cars is running...");
 	}
 
 }

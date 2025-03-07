@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.mx.rcq.api_cars.models.Model;
 import com.mx.rcq.api_cars.service.ModelService;
+import com.mx.rcq.api_cars.utils.ErrorResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -20,15 +21,19 @@ public class ModelController {
     }
 
     @PutMapping("/{modelId}")
-    public ResponseEntity<?> updateModelPrice(@PathVariable Long modelId, @RequestBody Map<String, Integer> request) {
+    public ResponseEntity<Object> updateModelPrice(@PathVariable Long modelId, @RequestBody Map<String, Integer> request) {
         Integer newPrice = request.get("average_price");
 
         if (newPrice == null || newPrice < 100000) {
-            return ResponseEntity.badRequest().body("The average_price must be greater then 100,000.");
+            return ResponseEntity.badRequest().body(new ErrorResponse("The average_price must be greater then 100,000."));
         }
 
         Optional<Model> modelOptional = modelService.updateModelPrice(modelId, newPrice);
-        return modelOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (modelOptional.isPresent()) {
+            return ResponseEntity.ok(modelOptional.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping

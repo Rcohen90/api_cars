@@ -10,7 +10,6 @@ import com.mx.rcq.api_cars.service.ModelService;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/brands")
@@ -27,7 +26,7 @@ public class BrandController {
     public ResponseEntity<List<Brand>> getAllBrands() {
         List<Brand> brands = brandService.getAllBrands().stream()
                 .map(brand -> new Brand(brand.getId(), brand.getName(), brandService.calculateAveragePrice(brand)))
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(brands);
     }
 
@@ -38,7 +37,7 @@ public class BrandController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addBrand(@RequestBody Brand brand) {
+    public ResponseEntity<Object> addBrand(@RequestBody Brand brand) {
         try {
             return ResponseEntity.ok(brandService.addBrand(brand.getName()));
         } catch (IllegalArgumentException e) {
@@ -47,7 +46,7 @@ public class BrandController {
     }
 
     @PostMapping("/{brandId}/models")
-    public ResponseEntity<?> addModel(@PathVariable Long brandId, @RequestBody Map<String, Object> request) {
+    public ResponseEntity<Object> addModel(@PathVariable Long brandId, @RequestBody Map<String, Object> request) {
         try {
             String name = (String) request.get("name");
             Integer averagePrice = (Integer) request.getOrDefault("average_price", 0);
