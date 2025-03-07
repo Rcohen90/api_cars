@@ -11,7 +11,9 @@ mvn spring-boot:run
 
 ## Testing
 
-mvn test
+- General de la API: mvn test
+- Por controlador de marca: mvn -Dtest=BrandControllerTest test
+- Por controlador de modelo: mvn -Dtest=ModelControllerTest test
 
 ## Data
 

@@ -27,7 +27,7 @@ class ModelControllerTest {
     void addModel_ShouldReturnError_WhenPriceIsTooLow() throws Exception {
         mockMvc.perform(post("/brands/1/models")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"Toyota\", \"average_price\": 900000}"))
+                        .content("{\"name\": \"Toyota\", \"average_price\": 70000}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("The average_price must be greater than 100,000."));
     }
