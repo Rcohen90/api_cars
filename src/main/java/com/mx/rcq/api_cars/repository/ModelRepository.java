@@ -9,4 +9,5 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
     List<Model> findByBrandId(Long brandId);
     List<Model> findByAveragePriceGreaterThan(int price);
     List<Model> findByAveragePriceLessThan(int price);
+    boolean existsByNameAndBrandId(String name, Long brandId);
 }

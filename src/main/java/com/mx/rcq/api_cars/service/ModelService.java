@@ -31,6 +31,11 @@ public class ModelService {
             throw new IllegalArgumentException("The average_price must be greater then 100,000.");
         }
 
+        boolean exists = modelRepository.existsByNameAndBrandId(name, brandId);
+        if (exists) {
+            throw new IllegalArgumentException("Model: '" + name + "' is exists on brand.");
+        }
+
         Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new IllegalArgumentException("Brand is not found."));
 
