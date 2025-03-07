@@ -25,7 +25,7 @@ public class ModelController {
         Integer newPrice = request.get("average_price");
 
         if (newPrice == null || newPrice < 100000) {
-            return ResponseEntity.badRequest().body(new ErrorResponse("The average_price must be greater then 100,000."));
+            return ResponseEntity.badRequest().body(new ErrorResponse("The average_price must be greater than 100,000."));
         }
 
         Optional<Model> modelOptional = modelService.updateModelPrice(modelId, newPrice);

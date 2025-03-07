@@ -28,7 +28,7 @@ public class ModelService {
     @Transactional
     public Model addModel(Long brandId, String name, Integer averagePrice) {
         if (averagePrice != null && averagePrice < 100000) {
-            throw new IllegalArgumentException("The average_price must be greater then 100,000.");
+            throw new IllegalArgumentException("The average_price must be greater than 100,000.");
         }
 
         boolean exists = modelRepository.existsByNameAndBrandId(name, brandId);
@@ -49,7 +49,7 @@ public class ModelService {
     @Transactional
     public Optional<Model> updateModelPrice(Long modelId, Integer newPrice) {
         if (newPrice < 100000) {
-            throw new IllegalArgumentException("The average_price must be greater then 100,000.");
+            throw new IllegalArgumentException("The average_price must be greater than 100,000.");
         }
         Model model = modelRepository.findById(modelId)
         .orElseThrow(() -> new IllegalArgumentException("Model is not found."));

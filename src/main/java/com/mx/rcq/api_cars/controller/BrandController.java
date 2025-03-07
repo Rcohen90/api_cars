@@ -52,7 +52,7 @@ public class BrandController {
             Integer averagePrice = (Integer) request.getOrDefault("average_price", 0);
 
             if (averagePrice != null && averagePrice < 100000) {
-                return ResponseEntity.badRequest().body("The average_price must be greater then 100,000.");
+                return ResponseEntity.badRequest().body("The average_price must be greater than 100,000.");
             }
 
             Model model = modelService.addModel(brandId, name, averagePrice);
